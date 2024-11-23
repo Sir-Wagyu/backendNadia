@@ -13,7 +13,7 @@ app.use(cors()); // Mengizinkan CORS
 app.use(express.json()); // Untuk parsing body JSON
 
 // Import routes
-const produkRoutes = require("./routes/produk"); // Pastikan rute produk sesuai path
+const produkRoutes = require("./api/produk"); // Pastikan rute produk sesuai path
 
 // Gunakan rute API
 app.use("/api/produk", produkRoutes); // Base URL untuk rute produk
