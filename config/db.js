@@ -1,24 +1,26 @@
-// Memuat environment variables dari .env file
 require("dotenv").config();
+const mysql = require("mysql");
 
-// Menyambungkan ke database MySQL
-const mysql = require("mysql2");
-
-// Membuat koneksi ke database menggunakan data dari .env
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST, // host database
-  user: process.env.DB_USER, // username database
-  password: process.env.DB_PASS, // password database
-  database: process.env.DB_NAME, // nama database
+  host: "c32rh.h.filess.io",
+  user: "nadiashop_saysection",
+  password: "02608815b1a78652aa789db70580a71d2ecece60",
+  database: "nadiashop_saysection",
+  port: 3307,
 });
 
-// Mengecek apakah koneksi berhasil
-connection.connect((err) => {
-  if (err) {
-    console.error("Database connection failed:", err.stack);
-    return;
-  }
-  console.log("Connected to the database as ID " + connection.threadId);
-});
+// Membungkus koneksi untuk mendukung Promise
+const db = {
+  query: (sql, params) => {
+    return new Promise((resolve, reject) => {
+      connection.query(sql, params, (err, results) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(results);
+      });
+    });
+  },
+};
 
-module.exports = connection;
+module.exports = db;

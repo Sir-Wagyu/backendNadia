@@ -5,12 +5,13 @@ const db = require("../config/db"); // Import koneksi database
 // Mendapatkan semua produk dengan pagination
 router.get("/all", async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // Default page = 1
-    const limit = parseInt(req.query.limit) || 10; // Default limit = 10
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
 
-    const [products] = await db.query("SELECT * FROM produk LIMIT ? OFFSET ?", [limit, offset]);
-    const [[{ total }]] = await db.query("SELECT COUNT(*) as total FROM produk");
+    const products = await db.query("SELECT * FROM produk LIMIT ? OFFSET ?", [limit, offset]);
+    const countResult = await db.query("SELECT COUNT(*) as total FROM produk");
+    const total = countResult[0].total;
 
     const totalPages = Math.ceil(total / limit);
 
